@@ -22,3 +22,44 @@ def generate_summary(text):
     response = model.generate_content(prompt)
 
     return response.text
+def generate_flashcards(text):
+
+    prompt = f"""
+    You are an expert study assistant.
+
+    Create 5 flashcards from the study material below.
+
+    Return them in the format:
+
+    Question: ...
+    Answer: ...
+
+    Text:
+    {text}
+    """
+
+    response = model.generate_content(prompt)
+
+    return response.text
+
+def generate_quiz(text):
+
+    prompt = f"""
+    Create 5 multiple choice questions from the following text.
+
+    Format:
+
+    Question: ...
+    A) ...
+    B) ...
+    C) ...
+    D) ...
+    Answer: ...
+
+    Text:
+    {text}
+    """
+
+    response = model.generate_content(prompt)
+
+    return response.text

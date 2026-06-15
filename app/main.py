@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from app.pdf_utils import extract_text_from_pdf
-from app.ai_utils import generate_summary
+from app.ai_utils import generate_summary, generate_flashcards, generate_quiz
 import os
 import uuid
 
@@ -78,4 +78,36 @@ async def summarize(request: SummaryRequest):
     return {
         "saved_filename": request.saved_filename,
         "summary": summary
+    }
+@app.post("/flashcards")
+async def flashcards(request: SummaryRequest):
+
+    file_path = os.path.join(
+        UPLOAD_FOLDER,
+        request.saved_filename
+    )
+
+    text = extract_text_from_pdf(file_path)
+
+    flashcards = generate_flashcards(text)
+
+    return {
+        "saved_filename": request.saved_filename,
+        "flashcards": flashcards
+    }
+@app.post("/quiz")
+async def create_quiz(request: ExtractTextRequest):
+
+    file_path = os.path.join(
+        UPLOAD_FOLDER,
+        request.saved_filename
+    )
+
+    text = extract_text_from_pdf(file_path)
+
+    quiz = generate_quiz(text)
+
+    return {
+        "saved_filename": request.saved_filename,
+        "quiz": quiz
     }
